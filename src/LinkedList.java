@@ -59,7 +59,7 @@ public class LinkedList<T extends Comparable> {
     }
 
     /**
-     * Sorts the linked list with bubble sort.
+     * Sorts the linked list with bubble sort. - O(n^2)
      */
     public void bubbleSort() {
         if (size <= 1) return;
@@ -114,7 +114,7 @@ public class LinkedList<T extends Comparable> {
 
         if (prev1 != null) prev1.setNext(swap2);
         else root = swap2;
-        if (prev2 != null && prev2 != swap1) prev2.setNext(swap1);
+        if (prev2 != null && prev2 != swap1) prev2.setNext(swap1); // adjacent nodes are handled by first swap
         else if (prev2 == null) root = swap2;
     }
 
