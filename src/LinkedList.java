@@ -3,6 +3,8 @@
  * Author: Spencer Little
  */
 
+import java.util.Stack;
+
 /**
  * A generic LinkedList and associated sorting methods.
  * @param <T> the type of element to be stored by the list, must be comparable for sorting
@@ -79,6 +81,49 @@ public class LinkedList<T extends Comparable> {
             }
             if (!swap) return;
         }
+    }
+
+    /**
+     * Sorts the linked list with shell sort. - O(n^2)
+     */
+    public void shellShort() {
+        Stack<Integer> intervals = genKnuthSequence();
+        while (!intervals.empty()) {
+            int intrv = intervals.pop();
+
+            Node prev1 = null, curr1 = root, prev2 = null, curr2 = root;
+            int leadInd = 0;
+
+            while (leadInd + intrv < size()) {
+
+                for (int j = 0; j < intrv; j++) {
+                    prev2 = curr2;
+                    curr2 = curr2.getNext();
+                    leadInd++;
+                }
+
+                if (curr1.compareTo(curr2) > 0) {
+                    swapNodes(prev1, curr1, prev2, curr2); // curr1 is implicitly updated
+                    prev1 = prev2;
+                } else {
+                    prev1 = prev2;
+                    curr1 = curr2;
+                }
+            }
+        }
+    }
+
+    /**
+     * Generates a sequence of intervals based on Knuth's sequence for shellshort.
+     */
+    private Stack<Integer> genKnuthSequence() { // is this proper way to calculate intervals?
+        Stack<Integer> stk = new Stack<>();
+        int rnd = 1, interval = 1;
+        while (interval < size()) {
+            stk.push(interval);
+            interval = (int) (Math.pow(3, rnd++) - 1) / 2;
+        }
+        return stk;
     }
 
 

@@ -11,11 +11,12 @@ import java.util.Scanner;
 public class Driver {
 
     //TODO: Allow files to be passed on command line
+    //TODO: Output stats: comparisons, swaps, and seconds
     public static void main(String[] args) {
         LinkedList<Integer> ints = readIntFile("TestData/random100.txt");
-        //LinkedList<Integer> ints = new LinkedList<>(new Integer[] {150,75,43,900,123,532});
+        //LinkedList<Integer> ints = new LinkedList<>(new Integer[] {150,75,43,900,123,532,75,54,123});
         System.out.println(ints);
-        ints.bubbleSort();
+        ints.shellShort();
         System.out.println(ints);
     }
 
