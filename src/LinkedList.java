@@ -69,7 +69,7 @@ public class LinkedList<T extends Comparable> {
             for (int j = 0; j < size - 1 - i; j++) {
                 if (curr.compareTo(curr.getNext()) > 0) {
                     Node tmp = curr.getNext(); // will become new previous
-                    swapNodes(prev, curr, curr, curr.getNext()); // current is implicitly updated
+                    swapNodes(curr, curr.getNext(), prev, curr); // current is implicitly updated
                     prev = tmp;
                     swap = true;
                 } else {
@@ -103,19 +103,24 @@ public class LinkedList<T extends Comparable> {
      * swap1, and swap2: prev1, and prev2 respectively.
      */
     private void swapNodes(Node prev1, Node swap1, Node prev2, Node swap2) {
-        boolean invalidNodes = (prev1 != null && prev1.getNext() != swap1)
-                || (prev2 != null && prev2.getNext() != swap2);
-        if (invalidNodes) throw new IllegalArgumentException("Previous nodes do not point to the swap nodes.");
+        boolean invalidNodes =
+                (prev1 != null && prev1.getNext() != swap1)
+                || (prev2 != null && prev2.getNext() != swap2)
+                || (swap1 == null) || (swap2 == null);
+
+        if (invalidNodes) throw new IllegalArgumentException("Invalid nodes: previous nodes do not point to the swap nodes. Or provided nodes were null.");
 
         Node next1 = swap1.getNext(), next2 = swap2.getNext();
-        swap1.setNext(next2);
-        if (next1 == swap2) swap2.setNext(swap1); // assure swap2 doesn't end up pointing to itself
+
+        if (swap1 == next2) swap1.setNext(swap2); // assure swap node doesn't end up pointing to itself
+        else swap1.setNext(next2);
+        if (swap2 == next1) swap2.setNext(swap1);
         else swap2.setNext(next1);
 
-        if (prev1 != null) prev1.setNext(swap2);
-        else root = swap2;
-        if (prev2 != null && prev2 != swap1) prev2.setNext(swap1); // adjacent nodes are handled by first swap
-        else if (prev2 == null) root = swap2;
+        if (prev1 != null && prev1 != swap2) prev1.setNext(swap2); // adjacent nodes are handled by first swap
+        else if (prev1 == null) root = swap2;
+        if (prev2 != null && prev2 != swap1) prev2.setNext(swap1);
+        else if (prev2 == null) root = swap1;
     }
 
     /*
