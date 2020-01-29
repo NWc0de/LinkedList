@@ -30,14 +30,7 @@ public class LinkedList<T extends Comparable> {
     public int size() {return size;}
     public T getFirst() {return root.getElemement();}
     public T getLast() {return tail.getElemement();}
-    public T get(int ind) {
-        if (ind >= size) throw new IllegalArgumentException("Index " + ind + " out of bounds for length " + size());
-        Node n = root;
-        for (int i = 0; i < ind; i++) {
-            n = n.getNext();
-        }
-        return n.getElemement();
-    }
+    public T get(int ind) { return getNode(ind).getElemement(); }
 
     public void addFirst(T elem) {
         Node in = new Node(elem);
@@ -91,23 +84,48 @@ public class LinkedList<T extends Comparable> {
         while (!intervals.empty()) {
             int intrv = intervals.pop();
 
-            Node prev1 = null, curr1 = root, prev2 = null, curr2 = root;
-            int leadInd = 0;
+            Node prev1, curr1, prev2, curr2;
+            int itr = intrv == 1 ? 1 : size() % intrv;
 
-            while (leadInd + intrv < size()) {
+            for (int i = 0; i < itr; i++) {
+                System.out.println(intrv);
+                prev1 = i == 0 ? null : getNode(i-1);
+                curr1 = getNode(i);
+                curr2 = curr1;
+                prev2 = prev1;
+                int ind = i;
 
-                for (int j = 0; j < intrv; j++) {
-                    prev2 = curr2;
-                    curr2 = curr2.getNext();
-                    leadInd++;
-                }
+                while (curr2 != null) {
 
-                if (curr1.compareTo(curr2) > 0) {
-                    swapNodes(prev1, curr1, prev2, curr2); // curr1 is implicitly updated
-                    prev1 = prev2;
-                } else {
-                    prev1 = prev2;
-                    curr1 = curr2;
+                    if (ind + intrv < size()) {
+                        prev2 = getNode(ind + intrv - 1);
+                        curr2 = getNode(ind + intrv);
+                        ind += intrv;
+                    } else {
+                        break;
+                    }
+
+                    //System.out.println("Before swap");
+                    //if (prev1 != null) System.out.println("prev1: " + prev1.getElemement());
+                    //System.out.println("curr1: " + curr1.getElemement());
+                    //System.out.println("prev2: " + prev2.getElemement());
+                    //System.out.println("curr2: " + curr2.getElemement());
+                    //System.out.println(toString());
+                    if (curr1.compareTo(curr2) > 0) {
+                        swapNodes(prev1, curr1, prev2, curr2); // curr1 is implicitly updated
+                        if (prev2 == curr1) prev1 = curr2; // handle case of adjacent nodes
+                        else prev1 = prev2;
+                    } else {
+                        prev1 = prev2;
+                        curr1 = curr2;
+                    }
+                    //System.out.println("After swap");
+                    //if (prev1 != null) System.out.println("prev1: " + prev1.getElemement());
+                    //System.out.println("curr1: " + curr1.getElemement());
+                    //System.out.println("prev2: " + prev2.getElemement());
+                    //System.out.println("curr2: " + curr2.getElemement());
+                    //System.out.println(toString());
+                    //System.out.println("---------------------");
                 }
             }
         }
@@ -124,6 +142,15 @@ public class LinkedList<T extends Comparable> {
             interval = (int) (Math.pow(3, rnd++) - 1) / 2;
         }
         return stk;
+    }
+
+    private Node getNode(int ind) {
+        if (ind >= size()) throw new IllegalArgumentException("Index " + ind + " out of bounds for length " + size());
+        Node n = root;
+        for (int i = 0; i < ind; i++) {
+            n = n.getNext();
+        }
+        return n;
     }
 
 
