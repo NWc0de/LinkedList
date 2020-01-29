@@ -81,52 +81,56 @@ public class LinkedList<T extends Comparable> {
      */
     public void shellShort() {
         Stack<Integer> intervals = genKnuthSequence();
-        while (!intervals.empty()) {
+        while (!intervals.empty()) { // for each interval
             int intrv = intervals.pop();
-
-            Node prev1, curr1, prev2, curr2;
             int itr = intrv == 1 ? 1 : size() % intrv;
+            Node prev1, curr1, prev2, curr2;
 
             for (int i = 0; i < itr; i++) {
                 System.out.println(intrv);
-                prev1 = i == 0 ? null : getNode(i-1);
+                prev1 = i == 0 ? null : getNode(i - 1);
                 curr1 = getNode(i);
                 curr2 = curr1;
                 prev2 = prev1;
                 int ind = i;
+                boolean swap;
+                System.out.println("--------------------------------");
+                do {
+                    swap = false;
+                    while (curr2 != null) {
 
-                while (curr2 != null) {
+                        if (ind + intrv < size()) {
+                            prev2 = getNode(ind + intrv - 1);
+                            curr2 = getNode(ind + intrv);
+                            ind += intrv;
+                        } else {
+                            break;
+                        }
 
-                    if (ind + intrv < size()) {
-                        prev2 = getNode(ind + intrv - 1);
-                        curr2 = getNode(ind + intrv);
-                        ind += intrv;
-                    } else {
-                        break;
+                        System.out.println("Before swap");
+                        if (prev1 != null) System.out.println("prev1: " + prev1.getElemement());
+                        System.out.println("curr1: " + curr1.getElemement());
+                        System.out.println("prev2: " + prev2.getElemement());
+                        System.out.println("curr2: " + curr2.getElemement());
+                        System.out.println(toString());
+                        if (curr1.compareTo(curr2) > 0) {
+                            swapNodes(prev1, curr1, prev2, curr2); // curr1 is implicitly updated
+                            if (prev2 == curr1) prev1 = curr2; // handle case of adjacent nodes
+                            else prev1 = prev2;
+                            swap = true;
+                        } else {
+                            prev1 = prev2;
+                            curr1 = curr2;
+                        }
+                        System.out.println("After swap");
+                        if (prev1 != null) System.out.println("prev1: " + prev1.getElemement());
+                        System.out.println("curr1: " + curr1.getElemement());
+                        System.out.println("prev2: " + prev2.getElemement());
+                        System.out.println("curr2: " + curr2.getElemement());
+                        System.out.println(toString());
+                        System.out.println("---------------------");
                     }
-
-                    //System.out.println("Before swap");
-                    //if (prev1 != null) System.out.println("prev1: " + prev1.getElemement());
-                    //System.out.println("curr1: " + curr1.getElemement());
-                    //System.out.println("prev2: " + prev2.getElemement());
-                    //System.out.println("curr2: " + curr2.getElemement());
-                    //System.out.println(toString());
-                    if (curr1.compareTo(curr2) > 0) {
-                        swapNodes(prev1, curr1, prev2, curr2); // curr1 is implicitly updated
-                        if (prev2 == curr1) prev1 = curr2; // handle case of adjacent nodes
-                        else prev1 = prev2;
-                    } else {
-                        prev1 = prev2;
-                        curr1 = curr2;
-                    }
-                    //System.out.println("After swap");
-                    //if (prev1 != null) System.out.println("prev1: " + prev1.getElemement());
-                    //System.out.println("curr1: " + curr1.getElemement());
-                    //System.out.println("prev2: " + prev2.getElemement());
-                    //System.out.println("curr2: " + curr2.getElemement());
-                    //System.out.println(toString());
-                    //System.out.println("---------------------");
-                }
+                } while (swap);
             }
         }
     }
