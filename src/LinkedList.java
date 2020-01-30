@@ -83,24 +83,23 @@ public class LinkedList<T extends Comparable> {
         Stack<Integer> intervals = genKnuthSequence();
         while (!intervals.empty()) {
             int intrv = intervals.pop();
-
             Node prev1, curr1, prev2, curr2;
 
             for (int i = 0; i < size() - intrv - 1; i++) {
                 boolean swap;
+                int itr = 0;
 
-                // simplify the logic here ? 
-                do { // bubble sort for this gap length starting at i
+                do { // bubble sort for gap length intrv starting at i
                     prev1 = i == 0 ? null : getNode(i - 1);
                     curr1 = getNode(i);
                     int ind = i;
                     swap = false;
 
-                    while (ind + intrv < size()) { // (ind + intrv < size() - l*intrv) -- subtract already considered elements here?
-
+                    while (ind + intrv < size() - itr * intrv) { // equivalent to 2nd for loop of bubble sort
                         prev2 = getNode(ind + intrv - 1);
                         curr2 = getNode(ind + intrv);
                         ind += intrv;
+                        itr++;
 
                         if (curr1.compareTo(curr2) > 0) {
                             swapNodes(prev1, curr1, prev2, curr2); // curr1 is implicitly updated
@@ -112,7 +111,6 @@ public class LinkedList<T extends Comparable> {
                             curr1 = curr2;
                         }
                     }
-
                 } while (swap);
             }
         }
