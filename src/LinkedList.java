@@ -83,20 +83,21 @@ public class LinkedList<T extends Comparable> {
         Stack<Integer> intervals = genKnuthSequence();
         while (!intervals.empty()) { // for each interval
             int intrv = intervals.pop();
-            int itr = intrv == 1 ? 1 : size() % intrv;
+
             Node prev1, curr1, prev2, curr2;
 
-            for (int i = 0; i < itr; i++) {
+            for (int i = 0; i < size() - intrv - 1; i++) {
                 System.out.println(intrv);
                 prev1 = i == 0 ? null : getNode(i - 1);
                 curr1 = getNode(i);
                 curr2 = curr1;
                 prev2 = prev1;
-                int ind = i;
                 boolean swap;
+                int ind = i;
                 System.out.println("--------------------------------");
                 do {
                     swap = false;
+
                     while (curr2 != null) {
 
                         if (ind + intrv < size()) {
@@ -130,6 +131,7 @@ public class LinkedList<T extends Comparable> {
                         System.out.println(toString());
                         System.out.println("---------------------");
                     }
+
                 } while (swap);
             }
         }
