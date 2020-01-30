@@ -85,7 +85,7 @@ public class LinkedList<T extends Comparable> {
             int intrv = intervals.pop();
             Node prev1, curr1, prev2, curr2;
 
-            for (int i = 0; i < size() - intrv - 1; i++) {
+            for (int i = 0; i < intrv; i++) {
                 boolean swap;
                 int itr = 0;
 
@@ -96,8 +96,8 @@ public class LinkedList<T extends Comparable> {
                     swap = false;
 
                     while (ind + intrv < size() - itr * intrv) { // equivalent to 2nd for loop of bubble sort
-                        prev2 = getNode(ind + intrv - 1);
-                        curr2 = getNode(ind + intrv);
+                        prev2 = getNodeForward(prev1, intrv);
+                        curr2 = getNodeForward(curr1, intrv);
                         ind += intrv;
                         itr++;
 
@@ -136,6 +136,19 @@ public class LinkedList<T extends Comparable> {
             n = n.getNext();
         }
         return n;
+    }
+
+    /**
+     * Gets the node fwd nodes ahead of str
+     */
+    private Node getNodeForward(Node str, int fwd) {
+        Node fwdNode = str == null ? root : str; // null is interpreted as node previous to root
+        int itr = str == null ? fwd - 1 : fwd;
+        for (int i = 0; i < itr; i++) {
+            if (fwdNode == null) throw new IllegalArgumentException("List length insufficient to get node " + fwd + " indices forward of the provided node.");
+            fwdNode = fwdNode.getNext();
+        }
+        return fwdNode;
     }
 
 
