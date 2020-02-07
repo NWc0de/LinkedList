@@ -88,7 +88,7 @@ public class LinkedList<T extends Comparable> {
         int tcmp = 0, texch = 0, tpass = 0;
 
         while (!intervals.empty()) {
-            int intrv = intervals.pop();
+            int intrv = intervals.pop(), pass = 0;
             Node prev1, curr1, prev2, curr2;
 
             for (int i = 0; i < intrv; i++) {
@@ -123,9 +123,13 @@ public class LinkedList<T extends Comparable> {
                 tcmp += cmp;
                 texch += exch;
                 tpass++;
-                stats.append(intrv + "\t\t\t" + (i + 1) + "\t\t\t" + cmp + "\t\t\t" + exch + "\t\t");
-                stats.append(toString() + "\n");
+                pass++;
+                if (size() < 20) {
+                    stats.append(intrv + "\t\t\t" + (i + 1) + "\t\t\t" + cmp + "\t\t\t" + exch + "\t\t");
+                    stats.append(toString() + "\n");
+                }
             }
+            if (size() > 20) stats.append(intrv + "\t\t\t" + pass + "\t\t\t" + tcmp + "\t\t\t" + texch + "\t\t\n");
         }
         stats.append("-------------------------------------\n");
         stats.append("Total \t\t" + tpass + "\t\t\t" + tcmp + "\t\t\t" + texch);
