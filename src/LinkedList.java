@@ -95,13 +95,13 @@ public class LinkedList<T extends Comparable> {
                 boolean swap;
                 int cmp = 0, exch = 0;
 
-                do { // bubble sort for gap length intrv starting at i
+                for (int j = 0; j < size()/intrv; j++) { // bubble sort for gap length intrv starting at i
                     prev1 = i == 0 ? null : getNode(i - 1);
                     curr1 = getNode(i);
                     int ind = i;
                     swap = false;
 
-                    while (ind + intrv < size()) { // equivalent to 2nd for loop of bubble sort
+                    while (ind + intrv < size() - j * intrv) { // equivalent to 2nd for loop of bubble sort
                         prev2 = getNodeForward(prev1, intrv);
                         curr2 = getNodeForward(curr1, intrv);
                         ind += intrv;
@@ -118,7 +118,8 @@ public class LinkedList<T extends Comparable> {
                         }
                         cmp++;
                     }
-                } while (swap);
+                    if (!swap) break;
+                }
                 tcmp += cmp;
                 texch += exch;
                 tpass++;
