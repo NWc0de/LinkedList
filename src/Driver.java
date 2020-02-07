@@ -13,11 +13,16 @@ public class Driver {
     //TODO: Allow files to be passed on command line
     //TODO: Output stats: comparisons, swaps, and seconds
     public static void main(String[] args) {
-        LinkedList<Integer> ints = readIntFile("TestData/random10000.txt");
+        //LinkedList<Integer> ints = readIntFile("TestData/random100.txt");
         //LinkedList<Integer> ints = new LinkedList<>(new Integer[] {150,75,43,900,123,532,75,54,123,53});
-        System.out.println(ints);
-        ints.shellShort();
-        System.out.println(ints);
+        LinkedList<Integer> ints = new LinkedList<>(new Integer[] {18, 79, 46, 75, 99, 91, 98, 53, 10, 23});
+
+        long start = System.nanoTime();
+        String stats = ints.shellShort();
+        long elapsed = System.nanoTime() - start;
+        stats += "\n\nTime elapsed: " + elapsed/1000000f + " ms";
+
+        System.out.println(stats);
     }
 
     private static LinkedList<Integer> readIntFile(String fName) {

@@ -64,7 +64,7 @@ public class LinkedList<T extends Comparable> {
             for (int j = 0; j < size - 1 - i; j++) {
                 if (curr.compareTo(curr.getNext()) > 0) {
                     Node tmp = curr.getNext(); // will become new previous
-                    swapNodes(curr, curr.getNext(), prev, curr); // current is implicitly updated
+                    swapNodes(prev, curr, curr, curr.getNext()); // current is implicitly updated
                     prev = tmp;
                     swap = true;
                 } else {
@@ -79,15 +79,21 @@ public class LinkedList<T extends Comparable> {
     /**
      * Sorts the linked list with shell sort. - O(n^2)
      */
-    public void shellShort() {
+    public String shellShort() { //TODO what about an insertion sort variant?
         Stack<Integer> intervals = genKnuthSequence();
+        StringBuilder stats = new StringBuilder();
+        stats.append("k \t\t pass \t\t cmp \t\t exch \t\t");
+        stats.append(toString());
+        stats.append("\n-------------------------------------\n");
+        int tcmp = 0, texch = 0, tpass = 0;
+
         while (!intervals.empty()) {
             int intrv = intervals.pop();
             Node prev1, curr1, prev2, curr2;
 
             for (int i = 0; i < intrv; i++) {
                 boolean swap;
-                int itr = 0;
+                int cmp = 0, exch = 0;
 
                 do { // bubble sort for gap length intrv starting at i
                     prev1 = i == 0 ? null : getNode(i - 1);
@@ -95,25 +101,34 @@ public class LinkedList<T extends Comparable> {
                     int ind = i;
                     swap = false;
 
-                    while (ind + intrv < size() - itr * intrv) { // equivalent to 2nd for loop of bubble sort
+                    while (ind + intrv < size()) { // equivalent to 2nd for loop of bubble sort
                         prev2 = getNodeForward(prev1, intrv);
                         curr2 = getNodeForward(curr1, intrv);
                         ind += intrv;
-                        itr++;
 
                         if (curr1.compareTo(curr2) > 0) {
                             swapNodes(prev1, curr1, prev2, curr2); // curr1 is implicitly updated
                             if (prev2 == curr1) prev1 = curr2; // handle case of adjacent nodes
                             else prev1 = prev2;
                             swap = true;
+                            exch++;
                         } else {
                             prev1 = prev2;
                             curr1 = curr2;
                         }
+                        cmp++;
                     }
                 } while (swap);
+                tcmp += cmp;
+                texch += exch;
+                tpass++;
+                stats.append(intrv + "\t\t\t" + (i + 1) + "\t\t\t" + cmp + "\t\t\t" + exch + "\t\t");
+                stats.append(toString() + "\n");
             }
         }
+        stats.append("-------------------------------------\n");
+        stats.append("Total \t\t" + tpass + "\t\t\t" + tcmp + "\t\t\t" + texch);
+        return stats.toString();
     }
 
     /**
@@ -124,7 +139,7 @@ public class LinkedList<T extends Comparable> {
         int rnd = 1, interval = 1;
         while (interval < size()) {
             stk.push(interval);
-            interval = (int) (Math.pow(3, rnd++) - 1) / 2;
+            interval = (int) (Math.pow(3, ++rnd) - 1) / 2;
         }
         return stk;
     }
