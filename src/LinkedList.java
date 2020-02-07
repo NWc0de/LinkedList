@@ -83,7 +83,7 @@ public class LinkedList<T extends Comparable> {
         Stack<Integer> intervals = genKnuthSequence();
         StringBuilder stats = new StringBuilder();
         stats.append("k \t\t pass \t\t cmp \t\t exch \t\t");
-        stats.append(toString());
+        if (size() < 20) stats.append(toString());
         stats.append("\n-------------------------------------\n");
         int tcmp = 0, texch = 0, tpass = 0;
 
