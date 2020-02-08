@@ -3,6 +3,7 @@
  * Author: Spencer Little
  */
 
+import java.util.Formatter;
 import java.util.Stack;
 
 /**
@@ -79,12 +80,13 @@ public class LinkedList<T extends Comparable> {
     /**
      * Sorts the linked list with shell sort. - O(n^2)
      */
-    public String shellShort() { //TODO what about an insertion sort variant?
+    public String shellShort() {
         Stack<Integer> intervals = genKnuthSequence();
         StringBuilder stats = new StringBuilder();
-        stats.append("k \t\t pass \t\t cmp \t\t exch \t\t");
-        if (size() < 20) stats.append(toString());
-        stats.append("\n-------------------------------------\n");
+        Formatter frmt = new Formatter(stats);
+        frmt.format("%12s%12s%12s%12s", "k", "pass", "cmp", "exch");
+        if (size() < 20) stats.append("\t\t" + toString());
+        stats.append("\n------------------------------------------------\n");
         int tcmp = 0, texch = 0, tpass = 0;
 
         while (!intervals.empty()) {
@@ -124,20 +126,59 @@ public class LinkedList<T extends Comparable> {
                 texch += exch;
                 tpass++;
                 pass++;
-                if (size() < 20) {
-                    stats.append(intrv + "\t\t\t" + (i + 1) + "\t\t\t" + cmp + "\t\t\t" + exch + "\t\t");
-                    stats.append(toString() + "\n");
-                }
+                if (size() < 20) frmt.format("%12d%12d%12d%12d\t\t" + toString() + "\n", intrv, (i + 1), cmp, exch);
             }
-            if (size() > 20) stats.append(intrv + "\t\t\t" + pass + "\t\t\t" + tcmp + "\t\t\t" + texch + "\t\t\n");
+            if (size() > 20) frmt.format("%12d%12d%12d%12d\n", intrv, pass, tcmp, texch);
         }
-        stats.append("-------------------------------------\n");
-        stats.append("Total \t\t" + tpass + "\t\t\t" + tcmp + "\t\t\t" + texch);
-        return stats.toString();
+        stats.append("------------------------------------------------\n");
+        frmt.format("%12s%12d%12d%12d", "Total", tpass, tcmp, texch);
+        return frmt.toString();
+    }
+
+
+    /**************************************************
+     *                Auxiliary Methods               *
+     **************************************************/
+
+    /**
+     * Returns a string representation of the linked list.
+     */
+    @Override
+    public String toString() {
+        StringBuilder asString = new StringBuilder();
+        for (Node x = root; x != null; x = x.next) {
+            asString.append("[ " + x.getElemement() + " ] -> ");
+        }
+        return asString.toString();
     }
 
     /**
-     * Generates a sequence of intervals based on Knuth's sequence for shellshort.
+     * Swaps nodes swap1 and swap2, requires the nodes "behind" (pointing to)
+     * swap1, and swap2 (prev1 and prev2 respectively).
+     */
+    private void swapNodes(Node prev1, Node swap1, Node prev2, Node swap2) {
+        boolean invalidNodes =
+                (prev1 != null && prev1.getNext() != swap1)
+                || (prev2 != null && prev2.getNext() != swap2)
+                || (swap1 == null) || (swap2 == null);
+
+        if (invalidNodes) throw new IllegalArgumentException("Invalid nodes: previous nodes do not point to the swap nodes. Or provided nodes were null.");
+
+        Node next1 = swap1.getNext(), next2 = swap2.getNext();
+
+        if (swap1 == next2) swap1.setNext(swap2); // assure swap node doesn't end up pointing to itself
+        else swap1.setNext(next2);
+        if (swap2 == next1) swap2.setNext(swap1);
+        else swap2.setNext(next1);
+
+        if (prev1 != null && prev1 != swap2) prev1.setNext(swap2); // adjacent nodes are handled by first swap
+        else if (prev1 == null) root = swap2;
+        if (prev2 != null && prev2 != swap1) prev2.setNext(swap1);
+        else if (prev2 == null) root = swap1;
+    }
+
+    /**
+     * Generates a sequence of intervals based on Knuth's sequence for shellsort.
      */
     private Stack<Integer> genKnuthSequence() { // is this proper way to calculate intervals?
         Stack<Integer> stk = new Stack<>();
@@ -169,48 +210,6 @@ public class LinkedList<T extends Comparable> {
             fwdNode = fwdNode.getNext();
         }
         return fwdNode;
-    }
-
-
-    /**************************************************
-     *                Auxiliary Methods               *
-     **************************************************/
-
-    /**
-     * Returns a string representation of the linked list.
-     */
-    @Override
-    public String toString() {
-        StringBuilder asString = new StringBuilder();
-        for (Node x = root; x != null; x = x.next) {
-            asString.append("[ " + x.getElemement() + " ] -> ");
-        }
-        return asString.toString();
-    }
-
-    /**
-     * Swaps nodes swap1 and swap2, requires the nodes "behind" (pointing to)
-     * swap1, and swap2: prev1, and prev2 respectively.
-     */
-    private void swapNodes(Node prev1, Node swap1, Node prev2, Node swap2) {
-        boolean invalidNodes =
-                (prev1 != null && prev1.getNext() != swap1)
-                || (prev2 != null && prev2.getNext() != swap2)
-                || (swap1 == null) || (swap2 == null);
-
-        if (invalidNodes) throw new IllegalArgumentException("Invalid nodes: previous nodes do not point to the swap nodes. Or provided nodes were null.");
-
-        Node next1 = swap1.getNext(), next2 = swap2.getNext();
-
-        if (swap1 == next2) swap1.setNext(swap2); // assure swap node doesn't end up pointing to itself
-        else swap1.setNext(next2);
-        if (swap2 == next1) swap2.setNext(swap1);
-        else swap2.setNext(next1);
-
-        if (prev1 != null && prev1 != swap2) prev1.setNext(swap2); // adjacent nodes are handled by first swap
-        else if (prev1 == null) root = swap2;
-        if (prev2 != null && prev2 != swap1) prev2.setNext(swap1);
-        else if (prev2 == null) root = swap1;
     }
 
     /*
