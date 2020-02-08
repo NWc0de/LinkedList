@@ -20,3 +20,5 @@ encapsulation. Since these methods are part of the LinkedList class, they do not
 **ShellSort** - Contains the main methods required to run the program. **Note**:
 readIntFile() and the LinkedList's toString method correspond to the readValues() 
 and displayList() methods from the assignment specification.
+
+**TestSort** - Contains a set of unit tests demonstrating the correctness of the bubble and shell sort in LinkedList.

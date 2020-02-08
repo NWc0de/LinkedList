@@ -10,7 +10,7 @@ Results for TestData/random10.txt:
 ------------------------------------------------
        Total           5          38          12
 
-Time elapsed: 22.294273 ms
+Time elapsed: 22.261246 ms
 
 Results for TestData/random100.txt: 
            k        pass         cmp        exch
@@ -22,7 +22,7 @@ Results for TestData/random100.txt:
 ------------------------------------------------
        Total          58        2076         466
 
-Time elapsed: 1.605675 ms
+Time elapsed: 2.197012 ms
 
 Results for TestData/random1000.txt: 
            k        pass         cmp        exch
@@ -36,7 +36,7 @@ Results for TestData/random1000.txt:
 ------------------------------------------------
        Total         543       46733        8831
 
-Time elapsed: 14.223558 ms
+Time elapsed: 17.08689 ms
 
 Results for TestData/random10000.txt: 
            k        pass         cmp        exch
@@ -53,7 +53,7 @@ Results for TestData/random10000.txt:
 ------------------------------------------------
        Total       14757      908447      150757
 
-Time elapsed: 3295.2104 ms
+Time elapsed: 3291.8347 ms
 
 Results for TestData/inorder100.txt: 
            k        pass         cmp        exch
@@ -65,7 +65,7 @@ Results for TestData/inorder100.txt:
 ------------------------------------------------
        Total          58         342           0
 
-Time elapsed: 0.337908 ms
+Time elapsed: 0.377294 ms
 
 Results for TestData/inorder1000.txt: 
            k        pass         cmp        exch
@@ -79,7 +79,7 @@ Results for TestData/inorder1000.txt:
 ------------------------------------------------
        Total         543        5457           0
 
-Time elapsed: 2.160972 ms
+Time elapsed: 2.660153 ms
 
 Results for TestData/inorder10000.txt: 
            k        pass         cmp        exch
@@ -96,7 +96,7 @@ Results for TestData/inorder10000.txt:
 ------------------------------------------------
        Total       14757       75243           0
 
-Time elapsed: 381.42557 ms
+Time elapsed: 394.35196 ms
 
 Results for TestData/reverse100.txt: 
            k        pass         cmp        exch
@@ -108,7 +108,7 @@ Results for TestData/reverse100.txt:
 ------------------------------------------------
        Total          58         723         230
 
-Time elapsed: 0.465218 ms
+Time elapsed: 0.523763 ms
 
 Results for TestData/reverse1000.txt: 
            k        pass         cmp        exch
@@ -122,7 +122,7 @@ Results for TestData/reverse1000.txt:
 ------------------------------------------------
        Total         543       14945        3920
 
-Time elapsed: 4.270345 ms
+Time elapsed: 4.630646 ms
 
 Results for TestData/reverse10000.txt: 
            k        pass         cmp        exch
@@ -139,4 +139,4 @@ Results for TestData/reverse10000.txt:
 ------------------------------------------------
        Total       14757      206129       53704
 
-Time elapsed: 2421.8528 ms
+Time elapsed: 2467.7998 ms
